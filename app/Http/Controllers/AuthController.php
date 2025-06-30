@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+
 
 class AuthController extends Controller
 {
@@ -94,5 +96,73 @@ class AuthController extends Controller
         $request->session()->invalidate(); // Invalidate session
         $request->session()->regenerateToken(); // Regenerate CSRF token
         return redirect()->route('login')->with('success', 'Logged out successfully!');
+    }
+
+    // API: Handle User Registration
+    public function apiRegister(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string|max:255',
+            'email' => 'required|email|unique:users|max:255',
+            'password' => 'required|string|min:6|confirmed',
+            'contact_no' => ['required', 'string', 'digits:10'],
+        ]);
+
+        try {
+            $user = User::create([
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'contact_no' => $request->contact_no,
+            ]);
+
+            // Assign default role (example: role_id 2 = User)
+            DB::table('user_roles')->insert([
+                'user_id' => $user->id,
+                'role_id' => 2,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Registration successful.',
+                'user' => $user,
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Registration failed.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    // API: Handle User Login
+    public function apiLogin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        if (Auth::attempt($request->only('email', 'password'))) {
+            $user = Auth::user();
+
+            // Generate token if using Laravel Sanctum or Passport
+            $token = $user->createToken('API Token')->plainTextToken;
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Login successful.',
+                'token' => $token,
+                'user' => $user,
+            ]);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Invalid credentials.',
+        ], 401);
     }
 }

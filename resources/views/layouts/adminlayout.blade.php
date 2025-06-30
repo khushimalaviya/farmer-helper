@@ -71,11 +71,11 @@
                     <i class="fa-solid fa-tractor" style="color: #FF9800;"></i> Farmers
                 </a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a href="{{ url('/admin/crops') }}" class="nav-link {{ Request::is('admin/crops') ? 'active' : '' }}">
                     <i class="fa-solid fa-seedling" style="color: #4CAF50;"></i> Crops
                 </a>
-            </li>
+            </li> --}}
             <li class="nav-item">
                 <a href="{{ url('/admin/weather') }}" class="nav-link {{ Request::is('admin/weather') ? 'active' : '' }}">
                     <i class="fa-solid fa-cloud-sun-rain" style="color: #1E88E5;"></i> Weather

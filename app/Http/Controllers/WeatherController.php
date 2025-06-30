@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Jobs\FetchWeatherData;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Weatherdetail;
 
 class WeatherController extends Controller
 {
@@ -71,4 +72,38 @@ class WeatherController extends Controller
         return response()->json(['message' => 'Weather data fetching started']);
     }
 
+    public function getWeatherDetail(Request $request)
+    {
+        // dd($request->all());
+        $request->validate([
+            'city' => 'required|string',
+        ]);
+
+        $city = $request->input('city'); // e.g., from a form
+        $apiKey = env('WEATHERSTACK2_API_KEY'); // move key to .env
+        // dd($apiKey , $city);
+    
+        $response = Http::get('http://api.weatherstack.com/current', [
+            'access_key' => $apiKey,
+            'query' => $city,
+            'units' => 'm',
+        ]);
+
+        $data = $response->json();
+        // dd($data);
+    
+        if ($response->failed() || isset($response['error'])) {
+            return back()->with('error', 'City not found or API error.');
+        }
+    
+        $weatherData = $response->json();
+    
+        return view('admin.weather', compact('weatherData'));
+    }
+    // Display saved weather data in a Blade view
+    public function showWeather()
+    {
+        $weatherData = Weatherdetail::all();
+        return view('admin.weather', compact('weatherData'));
+    }
 }

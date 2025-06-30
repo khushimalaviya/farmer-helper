@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 
@@ -72,7 +73,11 @@ class PageController extends Controller
 
     public function dashboard()
     {
-        return view('admin.dashboard');
+        // dd('field');
+        // total farmer
+        $totalFarmers = User::count();
+        // dd($farmer);
+        return view('admin.dashboard' , compact('totalFarmers'));
     }
     public function farmers()
     {

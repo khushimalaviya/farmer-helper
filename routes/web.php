@@ -1,9 +1,15 @@
 <?php
 
 use App\Http\Controllers\{
-    PageController, AuthController, WeatherController, 
-    HomeController, FarmerController, ProfileController, 
-    FarmDataController, CropRecommendationController
+    PageController,
+    AuthController,
+    WeatherController,
+    HomeController,
+    FarmerController,
+    ProfileController,
+    FarmDataController,
+    CropRecommendationController,
+    FarmerCrudController
 };
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DataController;
@@ -34,7 +40,25 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [PageController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/admin/farmers', [PageController::class, 'farmers'])->name('admin.farmers');
     Route::get('/admin/crops', [PageController::class, 'crops'])->name('admin.crops');
-    Route::get('/admin/weather', [PageController::class, 'weather'])->name('admin.weather');
+    Route::get('/admin/weather', [WeatherController::class, 'showWeather'])->name('admin.weather');
+
+    // Admin routes group
+    Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+        // Route for showing all farmers (index)
+        Route::get('farmers', [FarmerCrudController::class, 'index'])->name('farmers');
+
+        // Route for creating a new farmer
+        Route::get('farmers/create', [FarmerCrudController::class, 'create'])->name('farmers.create');
+        Route::post('farmers', [FarmerCrudController::class, 'store'])->name('farmers.store');
+
+        // Route for editing a farmer
+        Route::get('farmers/{farmer}/edit', [FarmerCrudController::class, 'edit'])->name('farmers.edit');
+        Route::put('farmers/{farmer}', [FarmerCrudController::class, 'update'])->name('farmers.update');
+
+        // Route for deleting a farmer
+        Route::delete('farmers/{farmer}', [FarmerCrudController::class, 'destroy'])->name('farmers.destroy');
+    });
+
 });
 
 // User Dashboard
@@ -60,6 +84,16 @@ Route::middleware(['auth:sanctum', 'role:farmer'])->group(function () {
     Route::post('/farmdata', [FarmerController::class, 'submitFarmData'])->name('farmdata.submit');
 });
 
-// 📌 Static Pages
+// Static Pages
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+
+//crop recommedation
+// Show crop recommendation result (optional direct route)
+Route::middleware(['auth:sanctum', 'role:farmer'])->get('/crop-recommendation', function () {
+    return view('farmers.crop_recommendation');
+})->name('crop.recommendation');
+
+Route::get('download-report/{farmId}', [FarmerController::class, 'downloadReport'])->name('farmers.downloadReport');
+
+Route::post('/weather-detail', [WeatherController::class, 'getWeatherDetail'])->name('weather.get.detail');

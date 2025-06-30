@@ -13,6 +13,8 @@ return Application::configure(basePath: dirname(__DIR__))
         web: __DIR__ . '/../routes/web.php',
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
+        api: __DIR__ . '/../routes/api.php',
+        
     )
     ->withMiddleware(function (Middleware $middleware) {
         // Register middleware using an array
@@ -26,11 +28,11 @@ return Application::configure(basePath: dirname(__DIR__))
         // ]);
 
         // Register API middleware stack
-        // $middleware->group('api', [
-        //     EnsureFrontendRequestsAreStateful::class,
-        //     ThrottleRequests::class . ':api',
-        //     SubstituteBindings::class,
-        // ]);
+        $middleware->group('api', [
+            EnsureFrontendRequestsAreStateful::class,
+            ThrottleRequests::class . ':api',
+            SubstituteBindings::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

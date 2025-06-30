@@ -27,4 +27,15 @@ class HomeController extends Controller
         return view('home', compact('userRole'));
         // return view('home');
     }
+
+     /**
+     * Show the admin dashboard with total farmers count.
+     */
+    public function dashboard()
+    {
+        // You can filter by role if needed
+       
+        // dd('field');
+        return view('admin.dashboard', compact('totalFarmers'));
+    }
 }

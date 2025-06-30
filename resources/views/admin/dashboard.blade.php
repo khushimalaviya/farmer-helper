@@ -8,13 +8,12 @@
         <div class="col-md-4">
             <div class="card text-white bg-primary mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">Total Farmers</h5>
-                    <p class="card-text">100+ Registered Farmers</p>
+                    <h5 class="card-title">Total Farmers <span >{{ $totalFarmers }}</span></h5>
                 </div>
             </div>
         </div>
         
-        <div class="col-md-4">
+        {{-- <div class="col-md-4">
             <div class="card text-white bg-success mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Crop Recommendations</h5>
@@ -22,8 +21,8 @@
                 </div>
             </div>
         </div>
-        
-        <div class="col-md-4">
+         --}}
+        {{-- <div class="col-md-4">
             <div class="card text-white bg-warning mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Weather Alerts</h5>
@@ -31,6 +30,6 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 </div>
 @endsection

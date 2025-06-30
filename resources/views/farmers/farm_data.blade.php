@@ -19,17 +19,17 @@
                             <option value="Clayey">Clayey (ચીકણી)</option>
                             <option value="Black">Black (કાળો)</option>
                             <option value="Red">Red (લાલો)</option>
-                            <option value="Alluvial">Alluvial (કાંપવાળી)</option>
+                            {{-- <option value="Alluvial">Alluvial (કાંપવાળી)</option> --}}
                         </select>
                     </div>
 
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <label for="land_area" class="form-label">Land Area (in acres)</label>
                         <input type="number" class="form-control" id="land_area" name="land_area"
                             placeholder="Enter land area">
-                    </div>
+                    </div> --}}
 
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <label for="water_source" class="form-label">Water Source</label>
                         <select class="form-select" id="water_source" name="water_source">
                             <option value="Well">Well (કૂવો)</option>
@@ -38,7 +38,7 @@
                             <option value="Borewell">Borewell (બોરવેલ)</option>
                             <option value="River">River (નદી)</option>
                         </select>
-                    </div>
+                    </div> --}}
 
                     <div class="mb-3">
                         <label for="season" class="form-label">Season</label>
@@ -46,8 +46,8 @@
                             <option value="Kharif">Kharif (વરસાદી)</option>
                             <option value="Rabi">Rabi (શિયાળુ)</option>
                             <option value="Zaid">Zaid (ઉનાળુ)</option>
-                            <option value="Spring">Spring (વસંત)</option>
-                            <option value="Autumn">Autumn (પાનખર)</option>
+                            {{-- <option value="Spring">Spring (વસંત)</option>
+                            <option value="Autumn">Autumn (પાનખર)</option> --}}
                         </select>
                     </div>
 

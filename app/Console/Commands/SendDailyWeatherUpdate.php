@@ -39,15 +39,15 @@ class SendDailyWeatherUpdate extends Command
     {
 
         info("Cron Job running at " . now());
-        // $farmers = User::whereNotNull('latitude')->whereNotNull('longitude')->get();
+        $farmers = User::whereNotNull('latitude')->whereNotNull('longitude')->get();
 
-        // foreach ($farmers as $farmer) {
-        //     SendWeatherReport::dispatch($farmer);  // Dispatch the job for each farmer
-        //     logger("Dispatched weather report job for user: " . $farmer->id);
-        // }
+        foreach ($farmers as $farmer) {
+            SendWeatherReport::dispatch($farmer);  // Dispatch the job for each farmer
+            logger("Dispatched weather report job for user: " . $farmer->id);
+        }
 
-        // $this->info('Daily weather reports sent!');
-        // logger()->info('All jobs dispatched for sending weather reports.');
+        $this->info('Daily weather reports sent!');
+        logger()->info('All jobs dispatched for sending weather reports.');
     }
 
 

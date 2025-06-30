@@ -2,40 +2,29 @@
 
 namespace App\Providers;
 
+use Illuminate\Cache\RateLimiter;
+use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
-use App\Jobs\FetchWeatherData;
-use App\Models\User;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Blade;
+use Illuminate\Cache\RateLimiting\Limit;
 
 class AppServiceProvider extends ServiceProvider
 {
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(RateLimiter $rateLimiter): void
+    {
+        // Define a rate limiter for API routes
+        $rateLimiter->for('api', function (Request $request) {
+            return Limit::perMinute(60); // Adjust this limit as needed
+        });
+    }
+
     /**
      * Register any application services.
      */
     public function register(): void
     {
         //
-    }
-
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        // Gate::define('admin-access', function (User $user) {
-        //     return $user->isAdmin();
-        // });
-    
-        // Gate::define('farmer-access', function (User $user) {
-        //     return $user->isFarmer();
-        // });
-
-        Blade::if('role', function ($roleName) {
-            $user = \App\Models\User::with('roles')->find(Auth::id());
-            return $user?->roles?->pluck('name')->contains($roleName);
-        });
     }
 }

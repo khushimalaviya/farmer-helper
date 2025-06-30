@@ -13,4 +13,6 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 
-Schedule::command(SendDailyWeatherUpdate::class)->dailyAt('19:57');
+// Schedule::command(command: SendDailyWeatherUpdate::class)->dailyAt('19:57');
+
+Schedule::command(SendDailyWeatherUpdate::class)->everyMinute();
